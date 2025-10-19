@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quà 20-10 Của Con!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /*
+         * Đây là phần CSS để trang trí cho trang web.
+         * Bạn không cần chỉnh sửa gì ở đây nếu không rành nhé.
+        */
+        :root {
+            --primary-color: #e57373; /* Hồng cam */
+            --secondary-color: #d9534f; /* Đỏ hồng */
+            --background-color: #fff9f9;
+            --text-color: #444;
+            --card-bg: #fff;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* --- MÀN HÌNH HỘP QUÀ BAN ĐẦU --- */
+        .gift-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--background-color);
+            z-index: 100;
+            transition: opacity 1s ease-out, visibility 1s;
+        }
+
+        .gift-container.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .gift-box {
+            position: relative;
+            cursor: pointer;
+            width: 200px;
+            height: 200px;
+        }
+        
+        .gift-box .lid {
+            position: absolute;
+            width: 220px;
+            height: 60px;
+            background: var(--primary-color);
+            left: -10px;
+            top: -10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease-in-out;
+        }
+        .gift-box .box {
+            position: absolute;
+            width: 200px;
+            height: 150px;
+            background: var(--secondary-color);
+            bottom: 0;
+            border-radius: 5px;
+        }
+        .gift-box .ribbon {
+            position: absolute;
+            width: 20px;
+            height: 100%;
+            background: #fce4ec;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+         .gift-box .lid .ribbon {
+            height: 100%;
+        }
+        .gift-box.open .lid {
+            transform: translateY(-100px) rotate(15deg);
+        }
+
+        .gift-message {
+            margin-top: 30px;
+            font-size: 1.2em;
+            color: var(--text-color);
+            text-align: center;
+            font-weight: 500;
+            animation: fadeIn 2s;
+        }
+
+        /* --- NỘI DUNG CHÍNH (SAU KHI MỞ QUÀ) --- */
+        .main-content {
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-in, transform 1s ease-in;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        h1, h2 {
+            text-align: center;
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+        h1 { font-size: 2.8em; margin-bottom: 10px; }
+        h2 { font-size: 1.5em; font-weight: 500; margin-bottom: 50px;}
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        /* Hiệu ứng thẻ lật */
+        .flip-card {
+            background-color: transparent;
+            height: 280px;
+            perspective: 1000px; /* Hiệu ứng 3D */
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+
+        .flip-card.is-flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .flip-card-front {
+            background-color: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .flip-card-back {
+            background-color: var(--primary-color);
+            color: white;
+            transform: rotateY(180deg);
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .letter {
+            background-color: #fffef0;
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 5px solid #fbc02d;
+            margin: 60px auto 20px;
+            max-width: 800px;
+        }
+        .letter h3 { color: #fbc02d; font-size: 1.5em; text-align: center; }
+        .signature {
+            text-align: right; font-style: italic; font-size: 1.2em;
+            margin-top: 30px; font-weight: 500; color: #555;
+        }
+
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <!-- MÀN HÌNH HỘP QUÀ -->
+    <div class="gift-container" id="gift-screen">
+        <div class="gift-box" id="gift-box">
+            <div class="lid">
+                 <div class="ribbon"></div>
+            </div>
+            <div class="box">
+                 <div class="ribbon"></div>
+            </div>
+        </div>
+        <p class="gift-message">Mẹ ơi, mẹ click vào hộp quà này<br>để nhận quà 20-10 của con nhé!</p>
+    </div>
+
+    <!-- NỘI DUNG CHÍNH - BỊ ẨN BAN ĐẦU -->
+    <div class="main-content" id="main-content">
+        <h1>Gửi Mẹ, Người Phụ Nữ Con Yêu Nhất!</h1>
+        <h2>Con có một vài điều muốn nói với mẹ... (Mẹ click vào từng tấm thẻ nhé)</h2>
+
+        <!-- DÀN THẺ LẬT - BẠN CÓ THỂ THAY ĐỔI NỘI DUNG Ở ĐÂY -->
+        <div class="card-grid">
+            
+            <!-- Thẻ 1 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">Nụ cười của Mẹ</div>
+                    <div class="flip-card-back">"Nụ cười của mẹ là nắng ấm, xua tan mọi mệt mỏi trong con. Con yêu nụ cười ấy!"</div>
+                </div>
+            </div>
+
+            <!-- Thẻ 2 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">Món ăn Mẹ nấu</div>
+                    <div class="flip-card-back">"Đi đâu cũng không quên được hương vị cơm nhà. Món ăn của mẹ là ngon nhất thế gian!"</div>
+                </div>
+            </div>
+            
+            <!-- Thẻ 3 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">Lời khuyên của Mẹ</div>
+                    <div class="flip-card-back">"Những lời khuyên của mẹ luôn là kim chỉ nam giúp con vững bước trên đường đời. Cảm ơn mẹ!"</div>
+                </div>
+            </div>
+            
+            <!-- Thẻ 4 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">Những cái ôm</div>
+                    <div class="flip-card-back">"Vòng tay mẹ là nơi bình yên nhất. Chỉ cần một cái ôm là mọi giông bão đều tan biến."</div>
+                </div>
+            </div>
+            
+            <!-- Thẻ 5 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">Sự hy sinh thầm lặng</div>
+                    <div class="flip-card-back">"Con biết mẹ đã hy sinh rất nhiều vì con. Con sẽ luôn ghi nhớ và trân trọng điều đó."</div>
+                </div>
+            </div>
+            
+            <!-- Thẻ 6 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">Niềm tin Mẹ trao</div>
+                    <div class="flip-card-back">"Cảm ơn mẹ đã luôn tin tưởng và ủng hộ con, ngay cả khi con nghi ngờ chính mình."</div>
+                </div>
+            </div>
+            
+            <!-- BẠN CÓ THỂ SAO CHÉP VÀ DÁN CÁC KHỐI "flip-card" Ở TRÊN ĐỂ THÊM THẺ -->
+
+        </div>
+        
+        <!-- BỨC THƯ CUỐI CÙNG -->
+        <div class="letter">
+            <h3>Và Lời Chúc Từ Trái Tim Con...</h3>
+            <p>
+                <b>[Viết bức thư 20-10 của bạn vào đây]</b><br>
+                <i>Gợi ý: Mẹ yêu! Cảm ơn mẹ vì tất cả. 20-10 này, con không biết chúc gì hơn là chúc mẹ thật nhiều sức khỏe, luôn vui vẻ, lạc quan và tự hào về con. Con yêu mẹ rất nhiều!</i>
+            </p>
+            <p class="signature">Con của mẹ</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Javascript để điều khiển hiệu ứng
+        document.addEventListener('DOMContentLoaded', function() {
+            const giftScreen = document.getElementById('gift-screen');
+            const giftBox = document.getElementById('gift-box');
+            const mainContent = document.getElementById('main-content');
+
+            // 1. Mở quà
+            giftBox.addEventListener('click', function() {
+                this.classList.add('open');
+                
+                // Sau 0.5s thì làm mờ màn hình quà
+                setTimeout(() => {
+                    giftScreen.classList.add('hidden');
+                }, 500);
+                
+                // Sau 1s thì hiện nội dung chính
+                setTimeout(() => {
+                    mainContent.classList.add('visible');
+                }, 1000);
+            });
+
+            // 2. Lật thẻ
+            const cards = document.querySelectorAll('.flip-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('is-flipped');
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+
